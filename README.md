@@ -9,7 +9,7 @@ This repository implements a framework for continuous variable multipartite enta
 The main script obtains the entire workflow of the project, including data loading, data augmentation, model training, and evaluation.
 
 #### Functions/Components
-- **Dataset Loading**: Imports datasets using `TripartiteData`, `QuadripartiteData`, or `CatData` functions from `Dataset.py`.
+- **Dataset Loading**: Imports datasets using `TripartiteData`, `QuadripartiteData`, or `CatData` functions from `Dataset.py` (The datasets can be downloaded from [this link](https://drive.google.com/file/d/1JXR0WCQMmeJmWcQ91LlCQWtTAVHOjSvw/view?usp=sharing)).
 - **Quantum Data Augmentation**: Enhances training data with `TripartiteQDA` or `QuadripartiteQDA` from `QDA.py`.
 - **Model Training**: Builds and trains the model using either `TripartiteModel` or `QuadripartiteModel` from `sharedCNN.py`.
 - **Evaluation**: Tests the model on a test set and computes accuracy and a normalized confusion matrix.
