@@ -13,6 +13,7 @@ from sklearn.metrics import confusion_matrix
 from Dataset import TripartiteData, QuadripartiteData, CatData
 from QDA import TripartiteQDA, QuadripartiteQDA
 from sharedCNN import TripartiteModel, QuadripartiteModel
+from tensorflow.keras.callbacks import EarlyStopping
 
 '''Import Dataset'''
 xtrain, ytrain, xtest, ytest = TripartiteData(num_states=30000, include_mc=False)
@@ -46,7 +47,8 @@ early_stopping = EarlyStopping(
 
 with tf.device('/gpu:0'):
     history = model.fit( 
-        [xtrain[:, 0:4, :, :].transpose(0, 2, 3, 1), xtrain[:, 4:8, :, :].transpose(0, 2, 3, 1), xtrain[:, 8:12, :, :].transpose(0, 2, 3, 1), xtrain[:, 12:16, :, :].transpose(0, 2, 3, 1)], ytrain, 
+        [xtrain[:, 0:4, :, :].transpose(0, 2, 3, 1), xtrain[:, 4:8, :, :].transpose(0, 2, 3, 1), xtrain[:, 8:12, :, :].transpose(0, 2, 3, 1)], ytrain,
+        # [xtrain[:, 0:4, :, :].transpose(0, 2, 3, 1), xtrain[:, 4:8, :, :].transpose(0, 2, 3, 1), xtrain[:, 8:12, :, :].transpose(0, 2, 3, 1), xtrain[:, 12:16, :, :].transpose(0, 2, 3, 1)], ytrain, 
         batch_size = Nbatch, 
         epochs = Nepochs, 
         validation_split = 0.3,
@@ -55,6 +57,7 @@ with tf.device('/gpu:0'):
 #%% Testing
 
 ypred = model.predict([xtest[:, 0:4, :, :].transpose(0, 2, 3, 1), xtest[:, 4:8, :, :].transpose(0, 2, 3, 1), xtest[:, 8:12, :, :].transpose(0, 2, 3, 1)])
+# ypred = model.predict([xtrain[:, 0:4, :, :].transpose(0, 2, 3, 1), xtrain[:, 4:8, :, :].transpose(0, 2, 3, 1), xtrain[:, 8:12, :, :].transpose(0, 2, 3, 1), xtrain[:, 12:16, :, :].transpose(0, 2, 3, 1)])
 
 y_true_labels = np.argmax(ytest, axis=1)
 y_pred_labels = np.argmax(ypred, axis=1)
@@ -63,4 +66,5 @@ print(f"accuracy:",accuracy)
 
 cm = confusion_matrix(y_true_labels, y_pred_labels)
 cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
 print(f"Confusion Matrix:",cm_normalized)
