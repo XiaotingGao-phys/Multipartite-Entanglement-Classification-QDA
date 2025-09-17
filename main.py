@@ -27,7 +27,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 # model = TripartiteModel()
 
 '''-----------------Quadripartite cases-----------------'''
-xtr1, ytr1, xt1, yt1 = QuadripartiteData(num_states=10000, include_mc=False)
+xtr1, ytr1, xt1, yt1 = QuadripartiteData(num_states=10000)
 xtr2, ytr2, xt2, yt2 = QuadripartiteCatData(num_states=10000)
 xtrain = np.concatenate([xtr1, xtr2]); ytrain = np.concatenate([ytr1, ytr2])
 xtest  = np.concatenate([xt1,  xt2 ]); ytest  = np.concatenate([yt1,  yt2 ])
@@ -84,3 +84,4 @@ print(f"accuracy:",accuracy)
 cm = confusion_matrix(y_true_labels, y_pred_labels)
 cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 print(f"Confusion Matrix:",cm_normalized)
+
